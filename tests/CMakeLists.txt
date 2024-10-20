@@ -1,18 +1,12 @@
-# find GoogleTest
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
-
-# set the same strict compilation flags for tests
+# use strict compilation flags for tests
 add_compile_options(-Wall -Wextra -Werror -std=c++98)
 
+# include GTest headers from the submodule
+include_directories(${gtest_SOURCE_DIR}/include)
+
 # add unit test executable for vector
-add_executable(test_vector_unit unit/sequence_containers/test_vector.cpp)
-target_link_libraries(test_vector_unit ${GTEST_LIBRARIES} pthread)
+add_executable(test_vector_unit units/sequence_containers/test_vector_unit.cpp)
+target_link_libraries(test_vector_unit gtest gtest_main pthread)
 
-# add integration test executable for vector
-# add_executable(test_vector_integration integration/sequence_containers/test_vector.cpp)
-# target_link_libraries(test_vector_integration ${GTEST_LIBRARIES} pthread)
-
-# register the tests with CTest
+# Register the test with CTest
 add_test(NAME VectorUnitTest COMMAND test_vector_unit)
-# add_test(NAME VectorIntegrationTest COMMAND test_vector_integration)
